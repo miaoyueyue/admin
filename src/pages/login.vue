@@ -150,7 +150,6 @@ export default {
               }
             },error =>{
                   $this.loading = false
-              // console.log(error.response);
           })
         } else {
           console.log('error submit!!')

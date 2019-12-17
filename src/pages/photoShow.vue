@@ -151,7 +151,7 @@ export default {
 	    }
   	},
   	created(){
-  		console.log(this.businessDes);
+  		// console.log(this.businessDes);
   	},
 }
 </script>

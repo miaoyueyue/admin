@@ -183,7 +183,7 @@ export default {
 	},
   methods: {
 	handleClick(row) {
-		console.log(row);
+		// console.log(row);
 		// getProDes
 		this.$store.commit('getProDes',row);
 		sessionStorage.setItem('getProDes', JSON.stringify(row));
@@ -211,14 +211,14 @@ export default {
 	},
 	current_change2(currentPage){
 		this.currentPage2 = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		var $this = this;
 		axios.get($this.baseUrl+'api/staff/list?page='+$this.currentPage2+'&pageSize=10',{
 			headers:{
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.userOptions = res.data.list;
               $this.total2 = res.data.count;
             },error =>{
@@ -231,7 +231,7 @@ export default {
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.userOptions = res.data.list;
               $this.total2 = res.data.count;
             },error =>{
@@ -239,7 +239,7 @@ export default {
 	},
 	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryProjectList();
 	},
     queryProjectList(){
@@ -249,7 +249,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.tableData = res.data.list;
 	              $this.total = res.data.count;
 	            },error =>{
@@ -289,7 +289,7 @@ export default {
         	}else if(v.status == "done"){
         		v.status = "完成"
         	}
-        	console.log(v[j]);
+        	// console.log(v[j]);
 	        return v[j]
         } else {
           return v[j]

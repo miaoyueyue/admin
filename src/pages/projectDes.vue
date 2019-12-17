@@ -225,7 +225,7 @@ export default {
 	created(){
 		this.queryAllList();
 		this.queryUserList();
-		console.log(JSON.parse(sessionStorage.getItem('getProDes')));
+		// console.log(JSON.parse(sessionStorage.getItem('getProDes')));
 	},
 	methods: {
 		 //下载PDF
@@ -239,7 +239,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              // $this.leadList = res.data;
 	              $this.handleDownload(res.data);
 	            },error =>{
@@ -261,7 +261,7 @@ export default {
 	      })
 	    },
 	    formatJson(filterVal, jsonData) {
-	    	console.log(jsonData)
+	    	// console.log(jsonData)
 	      return jsonData.map(v => filterVal.map(j => {
 	        if (j === "is_intake") {
 	        	if(v.is_intake == "yes"){
@@ -278,12 +278,12 @@ export default {
 		handleAvatarSuccess1(res, file) { //上传  
 			// this.houseList = URL.createObjectURL(file.raw);
 			// this.houseList = res;
-			console.log(res);
+			// console.log(res);
 			 this.$message.warning(`添加成功`);
 			// console.log(this.houseList);
 		},
 		beforeUpload(file) {
-            console.log(file)
+            // console.log(file)
             var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
             const extension = testmsg === 'pdf'
             if(!extension) {
@@ -295,9 +295,9 @@ export default {
             return extension
         },
 		handleAvatarSuccess(res, file) { //上传图片  
-			console.log(res);
+			// console.log(res);
 			this.summaryFile = res.key;
-			console.log(file);
+			// console.log(file);
 	        this.fileList = file.name;
 	        this.upload();
 		},
@@ -312,8 +312,8 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
-	              console.log();
+	              // console.log(res.data);
+	              // console.log();
 	               $this.des.summary_file = $this.summaryFile; 
 	               sessionStorage.setItem('getProDes', JSON.stringify($this.des));
 	   			// return JSON.parse(sessionStorage.getItem('getProDes'))
@@ -327,7 +327,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.dutyOptions = res.data.list;
 	              $this.total2 = res.data.count;
 	            },error =>{
@@ -335,21 +335,21 @@ export default {
 		},
 		current_change2(currentPage){
 			this.currentPage2 = currentPage;
-			console.log(this.currentPage);
+			// console.log(this.currentPage);
 			var $this = this;
 			axios.get($this.baseUrl+'api/staff/list?page='+$this.currentPage2+'&pageSize=10',{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.dutyOptions = res.data.list;
 	              $this.total2 = res.data.count;
 	            },error =>{
 	        })
 		},
 		handleClick(row) {
-			console.log(row);
+			// console.log(row);
 			var $this = this;
 			sessionStorage.setItem('cityDes',JSON.stringify(row));
 			this.$router.push({
@@ -379,7 +379,7 @@ export default {
 	    },
 	    current_change(currentPage){
 			this.currentPage = currentPage;
-			console.log(this.currentPage);
+			// console.log(this.currentPage);
 			this.queryAllList();
 		},
 	    queryAllList(){
@@ -389,7 +389,7 @@ export default {
 			            "Content-Type":"application/json"
 			        }
 		        }).then(res => {
-	                console.log(res.data);
+	                // console.log(res.data);
 	                $this.tableData = res.data;
 	                $this.total = res.data.count;
 	            },error =>{

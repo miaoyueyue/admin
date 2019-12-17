@@ -175,7 +175,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              	console.log(res.data);
+	              	// console.log(res.data);
 	              	if($this.currentPage == 1){
 	              		$this.queryUserList();
 	              	}else{
@@ -212,7 +212,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              	console.log(res.data);
+	              	// console.log(res.data);
 	              	if($this.currentPage == 1){
 	              		$this.queryUserList();
 	              	}else{
@@ -235,7 +235,7 @@ export default {
   	},
   	createUser(type,row){
   		this.isEdit = !type;
-  		console.log(row); 
+  		// console.log(row); 
   		this.dialogVisible = true;
   		if(row){
 			this.editId = row.id;
@@ -249,19 +249,19 @@ export default {
   	},
   	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryUserList();
 	},
 	current_change1(currentPage){
 		this.currentPage1 = currentPage;
-		console.log(currentPage);
+		// console.log(currentPage);
 		var $this = this;
 		axios.get($this.baseUrl+'api/staff/list?page='+currentPage+'&pageSize=10',{
 			headers:{
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.total = res.data.count;
               $this.parentOptions = res.data.list;
             },error =>{
@@ -276,7 +276,7 @@ export default {
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.tableData = res.data.list;
               $this.parentOptions = res.data.list;
               $this.total = res.data.count;
@@ -292,7 +292,7 @@ export default {
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.roleOptions = res.data;
             },error =>{
                  
@@ -308,14 +308,17 @@ export default {
 			parentName: $this.parent.name,
 			parentId: $this.parent.id,
 		}
-		console.log(obj);
-		console.log($this.parent);
+		// console.log(obj);
+		// console.log($this.parent);
         axios.post($this.baseUrl+'api/staff/user',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
+              	$this.$notify({
+                  message: "创建成功",
+                });
               	$this.account = "";
 				$this.password = "";
 				$this.userName = "";
@@ -345,7 +348,10 @@ export default {
                   "Content-Type":"application/json"
             }
         }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
+              	$this.$notify({
+                  message: "修改成功",
+                });
               	$this.editId = "";
 	  			$this.account = "";
 				$this.password = "";

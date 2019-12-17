@@ -182,7 +182,8 @@
 			      label="进度状态">
 				  <template slot-scope="scope">
 					<div v-if="scope.row.status == 'pending'">待配送</div>
-					<div v-if="scope.row.status == 'done'">签收</div>
+					<div v-if="scope.row.status == 'sign'">签收</div>
+					<div v-if="scope.row.status == 'done'">完成</div>
 					<div v-if="scope.row.status == 'invalid'">无效</div>
 				  </template>
 			    </el-table-column>
@@ -197,7 +198,7 @@
 			         <el-button @click="setStatus(scope.row,'invalid')" type="text" size="small" v-if="scope.row.status != 'invalid'">设为无效</el-button>
 			        <el-button @click="setEnable(scope.row)" type="text" size="small" v-else>设为有效</el-button>
 
-			        <el-button @click="setStatus(scope.row,'done')" type="text" size="small">签收</el-button>
+			        <el-button @click="setStatus(scope.row,'sign')" type="text" size="small">签收</el-button>
 			        <el-button type="text" size="small" @click="toBusinessDes(scope.row)">查看</el-button>
 			      </template>
 			    </el-table-column>
@@ -325,7 +326,7 @@ export default {
   	},
 	created(){
 	  	this.queryAllList();
-	  	console.log(this.buildDes);
+	  	// console.log(this.buildDes);
 	},
   methods:{
   	toPhoto(){
@@ -362,14 +363,14 @@ export default {
 			"remark":this.remark,
 			"seller":this.seller
 		}
-		console.log(obj);
+		// console.log(obj);
 		var $this = this;
   		axios.post($this.baseUrl+'api/luckgroup/create',obj,{
 		        headers:{
 		            "Content-Type":"application/json"
 		        }
 	        }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 $this.dialogVisible = false;
                 $this.roomNo = "";
 				$this.addTotal = "";
@@ -397,7 +398,7 @@ export default {
 				            "Content-Type":"application/json"
 				        }
 			        }).then(res => {
-		                console.log(res.data);
+		                // console.log(res.data);
 		                $this.queryAllList();
 		            },error =>{
 			    })
@@ -420,7 +421,7 @@ export default {
 				            "Content-Type":"application/json"
 				        }
 			        }).then(res => {
-		                console.log(res.data);
+		                // console.log(res.data);
 		                $this.queryAllList();
 		            },error =>{
 			    })
@@ -437,7 +438,7 @@ export default {
 			// 	            "Content-Type":"application/json"
 			// 	        }
 			//         }).then(res => {
-		 //                console.log(res.data);
+		                // console.log(res.data);
 		 //                $this.queryAllList();
 		 //            },error =>{
 			//     })
@@ -453,13 +454,13 @@ export default {
 				"status":row.originalStatus,
 				"applyId":row.applyId
 			}
-			console.log(row)
+			// console.log(row)
 		    	axios.post($this.baseUrl+'api/luckgroup/update',obj,{
 				        headers:{
 				            "Content-Type":"application/json"
 				        }
 			        }).then(res => {
-		                console.log(res.data);
+		                // console.log(res.data);
 		                $this.queryAllList();
 		            },error =>{
 			    	})
@@ -474,7 +475,7 @@ export default {
   	},
   	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryAllList();
 	},
     queryAllList(){
@@ -484,14 +485,14 @@ export default {
     		cycle = [];
     		cycle.push($this.Format($this.cycleTime[0]));
 	  		cycle.push($this.Format($this.cycleTime[1]));
-	        console.log(cycle);
+	        // console.log(cycle);
     	}
 	    axios.get($this.baseUrl+'api/project/houseApplyList?page='+$this.currentPage+'&pageSize=10&houseId='+$this.buildDes.id+'&city='+$this.city+'&houseName='+$this.buildDes.houseName+'&status='+$this.status+'&isSure='+$this.isSure+'&sureWay='+$this.sureWay+'&startTime='+cycle[0]+'&endTime='+cycle[1]+'&orgName='+$this.orgName,{
 		        headers:{
 		            "Content-Type":"application/json"
 		        }
 	        }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 $this.tableData = res.data.result;
                 $this.total = res.data.count;
             },error =>{

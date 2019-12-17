@@ -205,8 +205,8 @@ export default {
 	    }
   	},
   	created(){
-  		console.log(this.businessDes);
-  		console.log(JSON.parse(this.des.template_json));
+  		// console.log(this.businessDes);
+  		// console.log(JSON.parse(this.des.template_json));
   		this.theTemplate = JSON.parse(this.des.template_json).company;
   		this.queryBusinessImages();
   		if(this.businessDes.status == 'invalid'){
@@ -233,7 +233,7 @@ export default {
 					            "Content-Type":"application/json"
 					        }
 				        }).then(res => {
-			                console.log(res.data);
+			                // console.log(res.data);
 			                // $this.queryAllList();
 			            },error =>{
 				    })
@@ -252,7 +252,7 @@ export default {
 	              "Content-Type":"application/json"
 	            }
             }).then(res => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     if(res.data[0].images){
                     	$this.images = JSON.parse(res.data[0].images);
                     }else{
@@ -264,7 +264,7 @@ export default {
                     	})
                     	// $this.images = $this.theTemplate.assign(obj)
                     }   
-                    console.log($this.images);
+                    // console.log($this.images);
                 },error =>{
          	})
 	    },

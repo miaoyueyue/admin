@@ -167,6 +167,42 @@
 		  	</div>
 		</div>
 		<div class="searchcon flexb">
+			<div class="condition flex">
+			  	<div class="title">列表图:</div>
+			  	<div>
+			  		<el-upload
+					  class="avatar-uploader"
+					  :action="baseUrl+'api/upload/proxy'"
+					  :data='{prefix: "project/"}'
+					  :show-file-list="false"
+					  :on-success="handleAvatarSuccess1"
+					  >
+					  <!-- :action="baseUrl+'api/upload/proxy'"   :data="uploadData"  :http-request="upLoad" -->
+					  <img v-if="bannerImage" :src="bannerImageurl" class="avatar">
+					  <img v-else src="../../static/imgs/addImg.png" alt="">
+					</el-upload>
+			  	</div>
+		 	</div>
+		 </div>
+		 <div class="searchcon flexb">
+		 	<div class="condition flex">
+			  	<div class="title">主图:</div>
+			  	<div>
+			  		<el-upload
+					  class="avatar-uploader"
+					  :action="baseUrl+'api/upload/proxy'"
+					  :show-file-list="false"
+					  :data='{prefix: "project/"}'
+					  :on-success="handleAvatarSuccess2"
+					  >
+					  <img v-if="mainImage" :src="mainImageurl" class="avatar">
+					  <img v-else src="../../static/imgs/addImg.png" alt="">
+					</el-upload>
+			  	</div>
+		  		<!-- <img src="../../static/imgs/addImg.png" alt=""> -->
+		 	</div>
+		 </div>
+		<div class="searchcon flexb">
 		  	<div class="condition flex">
 		  		<div class="title">写字楼列表:</div>
 		  		<div>
@@ -321,6 +357,10 @@ export default {
         dialogVisible:false,//新建模板
         editDutyInfo:"",
         editDutyIndex:"",
+        bannerImage:"",
+        bannerImageurl:"",
+  		mainImage:"",
+  		mainImageurl:"",
   	}
   },
   watch:{
@@ -330,8 +370,8 @@ export default {
   		this.queryPicquire(newV);
   	},
   	customer(oldV,newV){
-  		console.log(oldV);
-  		console.log(newV);
+  		// console.log(oldV);
+  		// console.log(newV);
   	},
   },
   created(){
@@ -341,6 +381,16 @@ export default {
   	this.queryUserList();
   },
   methods:{
+  	handleAvatarSuccess1(res, file) {
+        this.bannerImageurl = URL.createObjectURL(file.raw);
+        // console.log(res);
+        this.bannerImage = res.key;
+	},
+	handleAvatarSuccess2(res, file) {
+	    this.mainImageurl = URL.createObjectURL(file.raw);
+	    // console.log(res);
+        this.mainImage = res.key;
+	},
   	toEditDuty(item,index){
   		this.editDutyInfo = {
   			editDutyName:{
@@ -354,7 +404,7 @@ export default {
 	  		city: item.city,
 			count: item.count
   		};
-  		console.log(this.editDutyInfo);
+  		// console.log(this.editDutyInfo);
   		this.editDutyIndex = index;
   		this.dialogVisible = true;
   	},
@@ -369,7 +419,7 @@ export default {
             "executorId":this.editDutyInfo.editExeName.id//执行人员id
   		}
   		this.dutyList.push(obj);
-  		console.log(this.dutyList);
+  		// console.log(this.dutyList);
   		this.dialogVisible = false;
   	},
   	toDeleDuty(item,index){
@@ -386,7 +436,7 @@ export default {
 	            "executorId":this.executor.id//执行人员id
 	  		}
 	  		this.dutyList.push(obj);
-	  		console.log(this.dutyList);
+	  		// console.log(this.dutyList);
 	  		this.dutys = ""
 	        this.city = ""
 	        this.count = ""
@@ -395,7 +445,7 @@ export default {
   	},
   	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryBrandList();
 	},
   	queryBrandList(){
@@ -405,7 +455,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.brandList = res.data.list;
 	              $this.total = res.data.count;
 	        },error =>{
@@ -425,7 +475,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.total1 = res.data.count;
 	              $this.productOptions = res.data.list;
 	        },error =>{
@@ -465,21 +515,33 @@ export default {
 	// },
     queryUserList(){
 		var $this = this;
-		axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=1000',{
+		axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=1000&role=supervise',{
 			headers:{
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.userOptions = res.data.list;
-              $this.userOptions1 = res.data.list;
+              // $this.userOptions1 = res.data.list;
               $this.total2 = res.data.count;
+              // $this.total3 = res.data.count;
+            },error =>{
+        })
+        axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=1000&role=executor',{
+			headers:{
+				"Content-Type":"application/json"
+			}
+        }).then(res => {
+              // console.log(res.data);
+              // $this.userOptions = res.data.list;
+              $this.userOptions1 = res.data.list;
+              // $this.total2 = res.data.count;
               $this.total3 = res.data.count;
             },error =>{
         })
 	},
 	queryPicquire(){
-		console.log(this.type);
+		// console.log(this.type);
 		// api/project/template?type=walk
 		var $this = this;
 		axios.get($this.baseUrl+'api/project/template?type=walk',{
@@ -488,7 +550,7 @@ export default {
 			}
         }).then(res => {
               let theHouse = JSON.parse(res.data.house);
-              console.log(theHouse);
+              // console.log(theHouse);
 
               theHouse.forEach((item,index)=>{
             		item.isShow = false;
@@ -500,16 +562,16 @@ export default {
               })
               $this.house = theHouse;
               $this.company = theCompany;
-              console.log($this.house);
-              console.log($this.company)
+              // console.log($this.house);
+              // console.log($this.company)
             },error =>{
         })
 	},
 	handleRemove(file, fileList) {
-        console.log(file, fileList);
+        // console.log(file, fileList);
 	},
 	handlePreview(file) {
-	    console.log(file);
+	    // console.log(file);
 	},
 	handleExceed(files, fileList) {
 	    this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -521,7 +583,7 @@ export default {
 		// this.houseList = URL.createObjectURL(file.raw);
 		this.houseList = res;
 		// console.log(res);
-		console.log(this.houseList);
+		// console.log(this.houseList);
 	},
   	saveNew(){
   		var $this = this
@@ -532,9 +594,6 @@ export default {
   		var cycle = [];
   		cycle.push($this.Format($this.cycleTime[0]));
   		cycle.push($this.Format($this.cycleTime[1]));
-        console.log(cycle);
-        console.log($this.house);
-        console.log($this.company);
 
 		var obj={
 			projectName: $this.projectName,
@@ -549,14 +608,19 @@ export default {
 		        "company":$this.company
 			},
 			houseList:$this.houseList,
+			bannerImage:$this.bannerImage,   
+			mainImage:$this.mainImage,
 		}
-		console.log(obj);
+		// console.log(obj);
         axios.post($this.baseUrl+'api/project/create',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
+              	$this.$notify({
+                  message: "创建成功",
+                });
               	$this.projectName = "";
 				$this.brandItem = "";
 				$this.cycleTime = "";
@@ -572,6 +636,9 @@ export default {
 				$this.executor = "";
 				$this.allCount = "";
 				$this.fileList = [];
+				$this.bannerImageurl="";
+		  		$this.mainImage="";
+		  		$this.mainImageurl="";
 				$this.$router.push({
 					path:"/project"
 				})
@@ -612,6 +679,9 @@ export default {
 						opacity: 0.6;
 						font-size: 0.94rem;
 					}
+				}
+				.avatar{
+					max-width: 280px;
 				}
 			}
 		}

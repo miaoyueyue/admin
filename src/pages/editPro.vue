@@ -166,6 +166,42 @@
 		  		</div>
 		  	</div>
 		</div>
+		<div class="searchcon flexb">
+			<div class="condition flex">
+			  	<div class="title">列表图:</div>
+			  	<div>
+			  		<el-upload
+					  class="avatar-uploader"
+					  :action="baseUrl+'api/upload/proxy'"
+					  :data='{prefix: "project/"}'
+					  :show-file-list="false"
+					  :on-success="handleAvatarSuccess1"
+					  >
+					  <!-- :action="baseUrl+'api/upload/proxy'"   :data="uploadData"  :http-request="upLoad" -->
+					  <img v-if="bannerImage" :src="bannerImageurl" class="avatar">
+					  <img v-else src="../../static/imgs/addImg.png" alt="">
+					</el-upload>
+			  	</div>
+		 	</div>
+		 </div>
+		 <div class="searchcon flexb">
+		 	<div class="condition flex">
+			  	<div class="title">主图:</div>
+			  	<div>
+			  		<el-upload
+					  class="avatar-uploader"
+					  :action="baseUrl+'api/upload/proxy'"
+					  :show-file-list="false"
+					  :data='{prefix: "project/"}'
+					  :on-success="handleAvatarSuccess2"
+					  >
+					  <img v-if="mainImage" :src="mainImageurl" class="avatar">
+					  <img v-else src="../../static/imgs/addImg.png" alt="">
+					</el-upload>
+			  	</div>
+		  		<!-- <img src="../../static/imgs/addImg.png" alt=""> -->
+		 	</div>
+		 </div>
 		<el-dialog
 		  title="新建写字楼"
 		  :modal-append-to-body="false"
@@ -320,6 +356,12 @@ export default {
         dialogVisible:false,//新建模板
         editDutyInfo:"",
         editDutyIndex:"",
+
+        bannerImage:"",
+        bannerImageurl:"",
+  		mainImage:"",
+  		mainImageurl:"",
+
   	}
   },
   computed:{
@@ -329,7 +371,7 @@ export default {
   },
   watch:{
   	type(oldV,newV){
-  		console.log(oldV);
+  		// console.log(oldV);
   		// console.log(newV);
   		if(oldV == this.des.type){
   			this.house = [];
@@ -343,8 +385,8 @@ export default {
   		}
   	},
   	customer(oldV,newV){
-  		console.log(oldV);
-  		console.log(newV);
+  		// console.log(oldV);
+  		// console.log(newV);
   	},
   },
   created(){
@@ -354,7 +396,7 @@ export default {
   	this.queryProductList();
   	this.queryUserList();
   	// this.$store.state.proDes.id,
-  	console.log(JSON.parse(sessionStorage.getItem('getProDes')));
+  	// console.log(JSON.parse(sessionStorage.getItem('getProDes')));
   	// let des = JSON.parse(sessionStorage.getItem('getProDes'))
 
   	// console.log(this.$store.state.proDes);
@@ -369,14 +411,28 @@ export default {
 	this.cycleTime = [new Date(this.des.cycle_end_time),new Date(this.des.cycle_start_time)];
 	this.type = this.des.type
 	this.productId = Number(this.des.product_id);
-	this.type = this.des.type
+	this.type = this.des.type;
+	this.bannerImage = this.des.banner_image;
+	this.mainImage = this.des.main_image;
+	this.bannerImageurl = this.pathUrl + this.des.banner_image;
+	this.mainImageurl = this.pathUrl + this.des.main_image;
 	// this.dutys = this.des.duty_name;
 	// this.city = this.des.duty_name;
  //    this.count = this.des.duty_name;
 	// this.executor = this.des.duty_name;
-	console.log(JSON.parse(this.des.template_json));
+	// console.log(JSON.parse(this.des.template_json));
   },
   methods:{
+  	handleAvatarSuccess1(res, file) {
+        this.bannerImageurl = URL.createObjectURL(file.raw);
+        // console.log(res);
+        this.bannerImage = res.key;
+	},
+	handleAvatarSuccess2(res, file) {
+	    this.mainImageurl = URL.createObjectURL(file.raw);
+	    // console.log(res);
+        this.mainImage = res.key;
+	},
   	toEditDuty(item,index){
   		this.editDutyInfo = {
   			editDutyName:{
@@ -390,7 +446,7 @@ export default {
 	  		city: item.city,
 			count: item.count
   		};
-  		console.log(this.editDutyInfo);
+  		// console.log(this.editDutyInfo);
   		this.editDutyIndex = index;
   		this.dialogVisible = true;
   	},
@@ -405,7 +461,7 @@ export default {
             "executorId":this.editDutyInfo.editExeName.id//执行人员id
   		}
   		this.dutyList.push(obj);
-  		console.log(this.dutyList);
+  		// console.log(this.dutyList);
   		this.dialogVisible = false;
   	},
   	toDeleDuty(item,index){
@@ -418,7 +474,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.dutyList = res.data;
 	        },error =>{
 
@@ -435,7 +491,7 @@ export default {
 	            "executorId":this.executor.id//执行人员id
 	  		}
 	  		this.dutyList.push(obj);
-	  		console.log(this.dutyList);
+	  		// console.log(this.dutyList);
 	  		this.dutys = ""
 	        this.city = ""
 	        this.count = ""
@@ -444,7 +500,7 @@ export default {
   	},
   	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryBrandList();
 	},
   	queryBrandList(){
@@ -454,7 +510,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.brandList = res.data.list;
 	              $this.total = res.data.count;
 	        },error =>{
@@ -464,7 +520,7 @@ export default {
     },
     current_change1(currentPage){
 		this.currentPage1 = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryBrandList();
 	},
   	queryProductList(){
@@ -474,7 +530,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.total1 = res.data.count;
 	              $this.productOptions = res.data.list;
 	        },error =>{
@@ -519,7 +575,7 @@ export default {
 				"Content-Type":"application/json"
 			}
         }).then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               $this.userOptions = res.data.list;
               $this.userOptions1 = res.data.list;
               $this.total2 = res.data.count;
@@ -528,7 +584,7 @@ export default {
         })
 	},
 	queryPicquire(){
-		console.log(this.type);
+		// console.log(this.type);
 		// api/project/template?type=walk
 		var $this = this;
 		axios.get($this.baseUrl+'api/project/template?type='+$this.type,{
@@ -541,8 +597,8 @@ export default {
 					theHouse.forEach((item,index)=>{
 							let obj={
 								isShow : false,
-							isChoose : item.isChoose,
-							name : item.name
+								isChoose : item.isChoose,
+								name : item.name
 							}
 						$this.house.push(obj)
 					})
@@ -556,17 +612,17 @@ export default {
 							}
 						$this.company.push(obj)
 					})
-					console.log($this.house);
-					console.log($this.company)
+					// console.log($this.house);
+					// console.log($this.company)
         		}
             },error =>{
         })
 	},
 	handleRemove(file, fileList) {
-        console.log(file, fileList);
+        // console.log(file, fileList);
 	},
 	handlePreview(file) {
-	    console.log(file);
+	    // console.log(file);
 	},
 	handleExceed(files, fileList) {
 	    this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -576,7 +632,7 @@ export default {
 	},
 	handleAvatarSuccess(res, file) { //上传图片
 		this.houseList = res;
-		console.log(this.houseList);
+		// console.log(this.houseList);
 	},
   	saveNew(){
   		var $this = this
@@ -591,9 +647,9 @@ export default {
   		var cycle = [];
   		cycle.push($this.Format($this.cycleTime[0]));
   		cycle.push($this.Format($this.cycleTime[1]));
-        console.log(cycle);
-        console.log($this.house);
-        console.log($this.company);
+        // console.log(cycle);
+        // console.log($this.house);
+        // console.log($this.company);
 
 		var obj={
 			projectId: $this.des.id,
@@ -607,16 +663,18 @@ export default {
 			templateJson:{
 				"house":$this.house,
 		        "company":$this.company
-			}
+			},
+			bannerImage:$this.bannerImage,   
+			mainImage:$this.mainImage,
 		}
-		console.log(obj);
+		// console.log(obj);
 
         axios.post($this.baseUrl+'api/project/create',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
               	$this.backTo();
     //           	$this.projectName = "";
 				// $this.brandId = "";
@@ -670,6 +728,9 @@ export default {
 						opacity: 0.6;
 						font-size: 0.94rem;
 					}
+				}
+				.avatar{
+					max-width: 280px;
 				}
 			}
 		}

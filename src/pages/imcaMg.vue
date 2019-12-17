@@ -15,7 +15,7 @@
 						<span>必选</span>
 					</div>
 					<div class="description">
-						{{item.description}}
+						{{item.description}} 至少{{item.count}}张
 					</div>
 					<div class="imgMore">
 						<div class="case inb"  v-for="(i,k) in item.src" :key="k">
@@ -50,7 +50,7 @@
 						<span>必选</span>
 					</div>
 					<div class="description">
-						{{item.description}}
+						{{item.description}} 至少{{item.count}}张
 					</div>
 					<div class="imgMore">
 						<div class="case inb"   v-for="(i,k) in item.src" :key="k">
@@ -98,6 +98,13 @@
 			  <el-form-item label="描述">
 			    <el-input v-model="form.description" placeholder=""></el-input>
 			  </el-form-item>
+
+
+			  <el-form-item label="上传数量">
+			    <el-input type="number" v-model="form.count" placeholder=""></el-input>
+			  </el-form-item>
+
+
 			  <el-form-item label="是否必选">
 			   <el-switch v-model="form.isChoose">
 				</el-switch>
@@ -140,6 +147,7 @@ export default {
   		form:{
   			name:"",
   			description:"",
+  			count:"",
   			isChoose:true,
   			src:"",
   		},
@@ -156,7 +164,7 @@ export default {
   watch:{
   	dialogVisible(oldV,newV){
   		// console.log(oldV);
-  		console.log(newV);
+  		// console.log(newV);
   		if(newV){
   			this.$refs.upload.clearFiles();
   			this.imageList = [];
@@ -179,14 +187,14 @@ export default {
         	  $this.tempId = JSON.parse(res.data.tempId)
               $this.house = JSON.parse(res.data.house); 
               $this.company= JSON.parse(res.data.company);
-              console.log($this.house);
-              console.log($this.company)
+              // console.log($this.house);
+              // console.log($this.company)
             },error =>{
         })
 	},
   	handleAvatarSuccess(res, file) {
         this.logoUrl = URL.createObjectURL(file.raw);
-        console.log(res);
+        // console.log(res);
         // if(this.imagedList.length!=0){
         // 	// this.imageList = this.imageList.concat(this.imagedList);
         // 	// console.log(this.imageList);
@@ -197,7 +205,7 @@ export default {
         // }
 	},
   	handleRemove(file, fileList) {
-        console.log(file, fileList);
+        // console.log(file, fileList);
         // this.imageList = [];
         fileList.forEach((item)=>{
         	this.imageList.push(item.response.key);
@@ -205,7 +213,7 @@ export default {
     },
   	onSubmit(){
   		this.form.src=this.imageList
-  		console.log(this.form);
+  		// console.log(this.form);
   		if(this.typeIt == "house"){
   			this.house.push(this.form);
   		}else if(this.typeIt == "com"){
@@ -214,6 +222,7 @@ export default {
   		this.form = {
   			name:"",
   			description:"",
+  			count:"",
   			isChoose:false,
   			src:"",
   		};
@@ -225,14 +234,15 @@ export default {
   	onEdit(){
   		// this.$refs.upload.clearFiles();
   		this.form.src=this.imagedList.concat(this.imageList);
-  		console.log(this.imageList);
-  		console.log(this.form);
+  		// console.log(this.imageList);
+  		// console.log(this.form);
   		if(this.typeIt == "house"){
   			this.house[this.activeIndex].name = this.form.name;
   			this.house[this.activeIndex].description = this.form.description;
+  			this.house[this.activeIndex].count = this.form.count;
   			this.house[this.activeIndex].isChoose = this.form.isChoose;
   			this.house[this.activeIndex].src = this.form.src;
-  			console.log(this.house);
+  			// console.log(this.house);
   			// this.house.push(this.form);
   		}else if(this.typeIt == "com"){
   			this.company[this.activeIndex]=this.form
@@ -240,6 +250,7 @@ export default {
   		this.form = {
   			name:"",
   			description:"",
+  			count:"",
   			isChoose:false,
   			src:"",
   		};
@@ -254,6 +265,7 @@ export default {
   		this.form = {
   			name:"",
   			description:"",
+  			count:"",
   			isChoose:false,
   			src:"",
   		};
@@ -261,11 +273,11 @@ export default {
   		// this.imageList = [];
   		this.typeIt = type;
   		this.dialogVisible = true;
-  		console.log(this.form);
+  		// console.log(this.form);
   		// this.$refs.upload.clearFiles();
   	},
   	deleteImg(type,index,k){
-  		console.log(type,index,k);
+  		// console.log(type,index,k);
   		if(type == "house"){
   			this.house[index].src.splice(k,1);
   		}else if(type=="com"){
@@ -277,10 +289,12 @@ export default {
   		this.activeIndex = index;
   		this.typeIt = type;
   		this.dialogVisible = true;
+  		// console.log(this.house);
   		if(type == "house"){
   			this.form = {
 	  			name:this.house[index].name,
 	  			description:this.house[index].description,
+	  			count:this.house[index].count,
 	  			isChoose:this.house[index].isChoose,
 	  			src:this.house[index].src,
 	  		};
@@ -289,6 +303,7 @@ export default {
   			this.form = {
 	  			name:this.company[index].name,
 	  			description:this.company[index].description,
+	  			count:this.company[index].count,
 	  			isChoose:this.company[index].isChoose,
 	  			src:this.company[index].src,
 	  		};
@@ -304,13 +319,16 @@ export default {
 			house: $this.house,
 			company: $this.company,
 		}
-		console.log(obj);
+		// console.log(obj);
         axios.post($this.baseUrl+'api/project/createTemp',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+          		$this.$notify({
+                  message: "保存成功",
+                });
+              	// console.log(res.data);
             },error =>{
             
         })

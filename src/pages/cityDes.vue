@@ -223,8 +223,8 @@ export default {
   },
   created(){
   	this.queryAllList();
-  	console.log(this.des);
-   	console.log(this.cityDes);
+  	// console.log(this.des);
+   	// console.log(this.cityDes);
   	this.querySumResult();
   },
   methods:{
@@ -237,14 +237,14 @@ export default {
 			"city":this.cityDes.city,
 			"dutyName":this.cityDes.dutyName
     	}
-  		console.log(obj);
+  		// console.log(obj);
   		var $this = this;
   		axios.post($this.baseUrl+'api/project/createBuild',obj,{
 		        headers:{
 		            "Content-Type":"application/json"
 		        }
 	        }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 $this.dialogVisible = false;
                 $this.addHouseName = "";
 				$this.addHouseAddress = "";
@@ -265,13 +265,13 @@ export default {
 	  			"original":row.status,
 				"status":"invalid"
 			}
-			console.log(row)
+			// console.log(row)
 		    axios.put($this.baseUrl+'api/project/setHouseStatus?houseId='+row.id,obj,{
 			        headers:{
 			            "Content-Type":"application/json"
 			        }
 		        }).then(res => {
-	                console.log(res.data);
+	                // console.log(res.data);
 	                $this.queryAllList();
 	            },error =>{
 		    })
@@ -285,13 +285,13 @@ export default {
 	  		var obj={
 				"status":row.original
 			}
-			console.log(row)
+			// console.log(row)
 		    axios.put($this.baseUrl+'api/project/setHouseStatus?houseId='+row.id,obj,{
 			        headers:{
 			            "Content-Type":"application/json"
 			        }
 		        }).then(res => {
-	                console.log(res.data);
+	                // console.log(res.data);
 	                $this.queryAllList();
 	            },error =>{
 		    })
@@ -306,7 +306,7 @@ export default {
   	},
   	current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryAllList();
 	},
     queryAllList(){
@@ -316,7 +316,7 @@ export default {
 		            "Content-Type":"application/json"
 		        }
 	        }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 $this.tableData = res.data.list;
                 $this.total = res.data.count;
             },error =>{
@@ -329,7 +329,7 @@ export default {
 		            "Content-Type":"application/json"
 		        }
 	        }).then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 $this.count = res.data.count;
             },error =>{
 	    })

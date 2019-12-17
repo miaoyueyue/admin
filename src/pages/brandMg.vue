@@ -89,7 +89,7 @@ export default {
 	},
 	methods: {
 		handleClick(row) {
-			console.log(row.id);
+			// console.log(row.id);
 			this.$router.push({
 				path:"/addBrand",
 				query:{
@@ -119,7 +119,7 @@ export default {
 	    },
 	    current_change(currentPage){
 			this.currentPage = currentPage;
-			console.log(this.currentPage);
+			// console.log(this.currentPage);
 			this.queryBrandList();
 		},
 	    queryBrandList(){
@@ -133,7 +133,7 @@ export default {
 						"Content-Type":"application/json"
 					}
 		        }).then(res => {
-		              console.log(res.data);
+		              // console.log(res.data);
 		              $this.tableData = res.data.list;
 		              // $this.parentOptions = res.data.list;
 		              $this.total = res.data.count;

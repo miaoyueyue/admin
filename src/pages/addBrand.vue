@@ -79,12 +79,12 @@ export default {
   },
   watch:{
   	pType(oldV,newV){
-  		console.log(oldV);
-  		console.log(newV);
+  		// console.log(oldV);
+  		// console.log(newV);
   	},
   	customer(oldV,newV){
-  		console.log(oldV);
-  		console.log(newV);
+  		// console.log(oldV);
+  		// console.log(newV);
   	},
   },
   created(){
@@ -102,7 +102,7 @@ export default {
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
               	$this.projectName = res.data.name;
 				$this.logoUrl = $this.pathUrl+res.data.logo;
 				$this.desUrl = $this.pathUrl+res.data.detail;
@@ -117,12 +117,12 @@ export default {
   	},
   	handleAvatarSuccess(res, file) {
         this.logoUrl = URL.createObjectURL(file.raw);
-        console.log(res);
+        // console.log(res);
         this.logo = res.key;
 	},
 	handleAvatarSuccess1(res, file) {
 	    this.desUrl = URL.createObjectURL(file.raw);
-	    console.log(res);
+	    // console.log(res);
         this.detail = res.key;
 	},
 	saveEdit(){
@@ -135,14 +135,17 @@ export default {
 			logo: $this.logo,
 			name: $this.projectName,
 		}
-		console.log(obj);
+		// console.log(obj);
 
         axios.put($this.baseUrl+'api/brand',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
+              	$this.$notify({
+                  message: "修改成功",
+                });
             },error =>{
         })
 	},
@@ -155,14 +158,17 @@ export default {
 			logo: $this.logo,
 			name: $this.projectName,
 		}
-		console.log(obj);
+		// console.log(obj);
 
         axios.post($this.baseUrl+'api/brand',obj,{
             headers:{
                   "Content-Type":"application/json"
             }
           }).then(res => {
-              	console.log(res.data);
+              	// console.log(res.data);
+              	$this.$notify({
+                  message: "创建成功",
+                });
               	$this.projectName = "";
 				$this.logoUrl = "";
 				$this.desUrl = "";

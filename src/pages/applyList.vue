@@ -238,7 +238,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              // $this.total1 = res.data.count;
 	              $this.productOptions = res.data.list;
 	        },error =>{
@@ -247,7 +247,7 @@ export default {
         })
     },
       handleClick(row) {
-        console.log(row);
+        // console.log(row);
         this.$router.push({
       		path:"/projectDes",
       	})
@@ -259,7 +259,7 @@ export default {
       },
       current_change(currentPage){
 		this.currentPage = currentPage;
-		console.log(this.currentPage);
+		// console.log(this.currentPage);
 		this.queryAllList();
 	  },
     aaa(txt,val){
@@ -271,23 +271,13 @@ export default {
     },
     queryAllList(){
     	this.searchTxt = this.aaa("name",this.name)+this.aaa("phone",this.phone)+this.aaa("org",this.org)+this.aaa("address",this.address)+this.aaa("planTimes",this.planTimes)+this.aaa("actualTimes",this.actualTimes)+this.aaa("status",this.status)+this.aaa("createdTime",this.createdTime)+this.aaa("lg_id",this.productName);
-		console.log(this.name);
-		console.log(this.phone);
-		console.log(this.org);
-		console.log(this.address);
-		console.log(this.planTimes);
-		console.log(this.actualTimes);
-		console.log(this.status);
-		console.log(this.createdTime);
-		console.log(this.productName);
-		console.log(this.searchTxt);
 		var $this = this;
 		axios.get($this.baseUrl+'api/luckgroup/all?page='+$this.currentPage+'&pageSize=10'+$this.searchTxt,{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              $this.tableData = res.data.list;
 	              $this.total = res.data.count;
 	            },error =>{
@@ -323,7 +313,7 @@ export default {
 	        	}else if(v.status == "invalid"){
 	        		v.status = "无效"
 	        	}
-	        	console.log(v[j]);
+	        	// console.log(v[j]);
 		        return v[j]
 	        } else {
 	          return v[j]
