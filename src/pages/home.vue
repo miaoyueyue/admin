@@ -55,7 +55,7 @@
 						<h1>{{nowViews}}</h1>
 					</router-link>
 					<div class="flexb">
-						<h1>登录账户：{{permission}}</h1>
+						<h1>登录账户：{{userName}}</h1>
 						<div style="font-size: 0.8rem;margin: 2px 20px;color: #333;vertical-align: top;cursor: pointer;" @click="logOut">退出</div>
 					</div>
 				</div>
@@ -142,6 +142,9 @@ export default {
   computed: {
     permission() {
       return localStorage.getItem("permission")
+    },
+    userName() {
+      return localStorage.getItem("userName")
     },
     key() {
       return this.$route.path
@@ -238,16 +241,16 @@ export default {
   },
   methods: {
   	select(index,indexPath){
-  		console.log(index)
+  		// console.log(index)
 		this.active = index;
-		console.log(this.nowViews);
+		// console.log(this.nowViews);
 		// this.$store.commit('visitedViews',this.nowViews);
 	},
     handleOpen(key, keyPath) {
-		console.log(key, keyPath);
+		// console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-    	console.log(key, keyPath);
+    	// console.log(key, keyPath);
     },
     logOut(){
     	var $this = this;
@@ -256,7 +259,7 @@ export default {
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
-	              console.log(res.data);
+	              // console.log(res.data);
 	              sessionStorage.clear();
 		    	  localStorage.clear();
 		    	  $this.$router.replace({

@@ -96,19 +96,14 @@
 					    <el-radio-button label="right">客户可见</el-radio-button>
 					  </el-radio-group>
 				</div> -->
+				<div class="changeButton">
+					<el-button  @click="selectAll" :type="buttonType">全部照片</el-button><el-button  @click="selectVis" :type="buttonType1">客户可见</el-button>
+				</div>
 			</div>
 			<div class="imgLine" v-for="(item,index) in images" :key="index">
 		        <div class="imgName">
 		          {{item.name}}
 		        </div>
-<!-- 		        <div>
-		        	<div class="imgMore">
-						<div style="position: relative;" class="case inb"  v-for="(i,k) in item.src" :key="k">
-							<div><img class="caseimg" :src="pathUrl+i" alt=""></div>
-							<div style="position: absolute;background-color: rgb(252,84,101);padding: 2px 5px;color: white;top: 0;font-size: 10px"><div>案列图片:</div></div>
-						</div>
-					</div>
-		        </div> -->
 		        <div>
 		        	<div class="imgMore">
 		        		<div style="position: relative;" class="case inb"  v-for="(i,k) in item.src" :key="'a'+k">
@@ -120,19 +115,40 @@
 								<span>案例</span>
 							</div>
 						</div>
-						<div class="case inb"  v-for="(i,k) in item.imgList" :key="2+k" @click="look(i)">
-							<div style="line-height: 180px;text-align: center;"><img class="caseimg" :src="pathUrl+i" alt=""></div>
-							<div class="txtcenter">
-								<img src="../../static/imgs/delete.png" alt="">
-								<span>删除</span>
+						<div class="case inb"  v-for="(i,k) in item.imgList" :key="2+k"  v-if="i.isVisible || !seeVis">
+							<div style="line-height: 180px;text-align: center;" @click="look(i.src)">
+								<img class="caseimg" :src="pathUrl+i.src" alt="">
+							</div>
+							<div class="flexa">
+								<div  @click="deleteit(index,k)">
+									<img src="../../static/imgs/delete.png" alt="">
+									<span>删除</span>
+								</div>
+								<div>
+									<el-checkbox v-model="i.isVisible">客户可见</el-checkbox>
+								</div>
 							</div>
 						</div>
-						<div class="case inb" @click="toEdit('house',index)">
+<!-- 						<div class="case inb" @click="toEdit('house',index)">
 							<div style="line-height: 180px;text-align: center;"><img class="caseimg"src="../../static/imgs/addImg.png" alt=""></div>
 							<div class="txtcenter">
 								<span>继续添加图片</span>
 							</div>
-						</div>
+						</div> -->
+						<div class="case inb" @click="getIndex(index)">
+					  		<el-upload
+							  class="avatar-uploader"
+							  :action="baseUrl+'api/upload/proxy'"
+							  :data='{prefix: "project/"}'
+							  :show-file-list="false"
+							  :on-success="handleAvatarSuccess"
+							  >
+							  <div style="line-height: 180px;text-align: center;"><img class="caseimg"src="../../static/imgs/addImg.png" alt=""></div>
+								<div class="txtcenter">
+									<span>继续添加图片</span>
+								</div>
+							</el-upload>
+					  	</div>
 					</div>
 		        </div>
 		        
@@ -174,7 +190,7 @@
 		    <img :src="pathUrl+looksrc" style="max-width: 100%;max-height: 100%;display: block; margin: 0 auto;"/>
 		</el-dialog>
 		<div class="txtcenter toSave">
-	  		<el-button type="primary">保存</el-button>
+	  		<el-button type="primary" @click="subImg">保存</el-button>
 	  	</div>
 	</div>
 </template>
@@ -194,6 +210,10 @@ export default {
   		theTemplate:"",
   		looksrc:"",
   		isShowImageDialog:false,
+  		operIndex:"",
+  		seeVis:false,
+  		buttonType:"primary",
+  		buttonType1:"",
   	}
   },
    computed:{
@@ -206,7 +226,7 @@ export default {
   	},
   	created(){
   		// console.log(this.businessDes);
-  		// console.log(JSON.parse(this.des.template_json));
+  		console.log(JSON.parse(this.des.template_json).company);
   		this.theTemplate = JSON.parse(this.des.template_json).company;
   		this.queryBusinessImages();
   		if(this.businessDes.status == 'invalid'){
@@ -215,6 +235,16 @@ export default {
   		
   	},
   	methods:{
+  		selectAll(){
+  			this.seeVis = false;
+  			this.buttonType = "primary";
+  			this.buttonType1 = "";
+  		},
+  		selectVis(){
+  			this.seeVis = true;
+  			this.buttonType1 = "primary";
+  			this.buttonType = "";
+  		},	
   		look(i){
   			this.looksrc = i;
   			this.isShowImageDialog = true;
@@ -264,10 +294,51 @@ export default {
                     	})
                     	// $this.images = $this.theTemplate.assign(obj)
                     }   
-                    // console.log($this.images);
+                    console.log($this.images);
                 },error =>{
          	})
 	    },
+	    getIndex(index){
+	    	// console.log(index);
+	    	this.operIndex = index;
+	    },
+	    handleAvatarSuccess(res, file) {
+	        // let img = URL.createObjectURL(file.raw);
+	        // console.log(res);
+	        let img = res.key;
+	        var $this = this;
+	        var obj={
+	        	src:img,
+	        	isVisible:true
+	        }
+	        $this.images[$this.operIndex].imgList.push(obj);
+	        // $this.$set($this.images[$this.operIndex].imgList,0,img);
+	       	// vm.$set(vm.items, indexOfItem, newValue)，
+            this.$forceUpdate();
+		},
+		deleteit(index,i){
+			// console.log(i);
+	        this.images[index].imgList.splice(i,1);
+            this.$forceUpdate();
+		},
+		subImg(){
+			var $this = this;
+	  		var obj={
+				"applyId":$this.businessDes.applyId,
+				"images":JSON.stringify(this.images),
+			}
+		    axios.put($this.baseUrl+'api/luckgroup/asyncImage',obj,{
+			        headers:{
+			            "Content-Type":"application/json"
+			        }
+		        }).then(res => {
+		            // console.log(res.data);
+		            // $this.queryAllList();
+		            $this.queryBusinessImages();
+		        },error =>{
+		    })
+	          
+		}
   	}
 }
 </script>
@@ -296,6 +367,19 @@ export default {
 		}
 		.showImg{
 			border-top: 1px solid rgb(228,228,228);
+			.flex{
+				h2{
+					line-height: 40px;
+					margin-right:30px;
+				}
+				.changeButton{
+					button{
+						margin:0;
+						border-radius: 0;
+					}
+				}
+				margin-bottom: 20px;
+			}
 			.el-radio-group{
 				margin: 0  20px 20px!important;
 				span{

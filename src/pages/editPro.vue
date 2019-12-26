@@ -7,14 +7,14 @@
 		  	</div>
 		    <div class="condition flex">
 			  	<div class="title">客户:</div>
-			  	<el-select value-key="id" v-model="brandId" placeholder="请选择">
+			  	<el-select value-key="id" v-model="brandId" filterable placeholder="请选择">
 				    <el-option
 				      v-for="item in brandList"
 				      :key="item.id"
 				      :label="item.name"
 				      :value="item.id">
 				    </el-option>
-				    <div class="txtcenter">
+				    <!-- <div class="txtcenter">
 				   		<el-pagination 
 							 class="fy txtright margin"
 				             layout="prev, pager, next"
@@ -23,7 +23,7 @@
 				             background
 			            >
 			            </el-pagination>
-				   </div>
+				   </div> -->
 				</el-select>
 		 	</div>
 		    <div class="condition flex">
@@ -51,14 +51,14 @@
 			</div>
 			<div class="condition flex">
 			  	<div class="title">关联商品:</div>
-			  	<el-select v-model="productId" placeholder="请输入关联商品">
+			  	<el-select v-model="productId" placeholder="请输入关联商品" filterable>
 				    <el-option
 				      v-for="item in productOptions"
 				      :key="item.lg_id"
 				      :label="item.lg_title"
 				      :value="item.lg_id">
 				    </el-option>
-				    <div class="txtcenter">
+				    <!-- <div class="txtcenter">
 				   		<el-pagination 
 							 class="fy txtright margin"
 				             layout="prev, pager, next"
@@ -67,7 +67,7 @@
 				             background
 			            >
 			            </el-pagination>
-				   </div>
+				   </div> -->
 				</el-select>
 			</div>
 		</div>
@@ -498,40 +498,40 @@ export default {
 	        this.executor = ""
         }
   	},
-  	current_change(currentPage){
-		this.currentPage = currentPage;
-		// console.log(this.currentPage);
-		this.queryBrandList();
-	},
+ //  	current_change(currentPage){
+	// 	this.currentPage = currentPage;
+	// 	// console.log(this.currentPage);
+	// 	this.queryBrandList();
+	// },
   	queryBrandList(){
 	    var $this = this;
-		axios.get($this.baseUrl+'api/brand/all?page='+$this.currentPage+'&pageSize=10',{
+		axios.get($this.baseUrl+'api/brand/all?page=1&pageSize=100000',{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
 	              // console.log(res.data);
 	              $this.brandList = res.data.list;
-	              $this.total = res.data.count;
+	              // $this.total = res.data.count;
 	        },error =>{
 	                  // $this.loading = false
 	              // console.log(error.response);
         })
     },
-    current_change1(currentPage){
-		this.currentPage1 = currentPage;
-		// console.log(this.currentPage);
-		this.queryBrandList();
-	},
+ //    current_change1(currentPage){
+	// 	this.currentPage1 = currentPage;
+	// 	// console.log(this.currentPage);
+	// 	this.queryBrandList();
+	// },
   	queryProductList(){
 	    var $this = this;
-		axios.get($this.baseUrl+'api/luckgroup/product?page='+$this.currentPage1+'&pageSize=10',{
+		axios.get($this.baseUrl+'api/luckgroup/product?page=1&pageSize=100000',{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
 	              // console.log(res.data);
-	              $this.total1 = res.data.count;
+	              // $this.total1 = res.data.count;
 	              $this.productOptions = res.data.list;
 	        },error =>{
 	                  // $this.loading = false
@@ -570,15 +570,27 @@ export default {
 	// },
     queryUserList(){
 		var $this = this;
-		axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=10000',{
+		axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=1000&role=supervise',{
 			headers:{
 				"Content-Type":"application/json"
 			}
         }).then(res => {
               // console.log(res.data);
               $this.userOptions = res.data.list;
-              $this.userOptions1 = res.data.list;
+              // $this.userOptions1 = res.data.list;
               $this.total2 = res.data.count;
+              // $this.total3 = res.data.count;
+            },error =>{
+        })
+        axios.get($this.baseUrl+'api/staff/list?page=1&pageSize=1000&role=executor',{
+			headers:{
+				"Content-Type":"application/json"
+			}
+        }).then(res => {
+              // console.log(res.data);
+              // $this.userOptions = res.data.list;
+              $this.userOptions1 = res.data.list;
+              // $this.total2 = res.data.count;
               $this.total3 = res.data.count;
             },error =>{
         })
@@ -641,7 +653,7 @@ export default {
         })
        	$this.des.template_json = '{"house":'+JSON.stringify($this.house)+',"company":'+JSON.stringify($this.company)+'}'
        	sessionStorage.setItem('getProDes', JSON.stringify($this.des));
-  // 		this.house = JSON.parse(this.des.template_json).house;
+  		// this.house = JSON.parse(this.des.template_json).house;
 		// this.company = JSON.parse(this.des.template_json).company;
 
   		var cycle = [];
@@ -675,6 +687,9 @@ export default {
             }
           }).then(res => {
               	// console.log(res.data);
+              	$this.$notify({
+                  message: "修改成功",
+                });
               	$this.backTo();
     //           	$this.projectName = "";
 				// $this.brandId = "";

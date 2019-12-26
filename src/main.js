@@ -22,11 +22,11 @@ Vue.use(ElementUI);
 // Vue.prototype.$post = post
 // Vue.prototype.$fetch = fetch
 
-Vue.prototype.pathUrl = "https://z-test.xihongshi.live/"
-// Vue.prototype.pathUrl = "https://z.xihongshi.live/"
+// Vue.prototype.pathUrl = "https://z-test.xihongshi.live/"
+Vue.prototype.pathUrl = "https://z.xihongshi.live/"
 
-// Vue.prototype.baseUrl = process.env.NODE_ENV === 'production' ?'https://e.xihongshi.live/':'';
-Vue.prototype.baseUrl = process.env.NODE_ENV === 'production' ?'http://47.101.139.94/':'';
+Vue.prototype.baseUrl = process.env.NODE_ENV === 'production' ?'https://e.xihongshi.live/':'';
+// Vue.prototype.baseUrl = process.env.NODE_ENV === 'production' ?'http://47.101.139.94/':'';
 
 // Vue.prototype.baseUrl = 'https://e.xihongshi.live/'http://47.101.139.94/
 // Vue.prototype.baseUrl = 'http://localhost:8080/'

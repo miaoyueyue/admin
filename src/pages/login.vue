@@ -136,6 +136,7 @@ export default {
                 })
                 // $this.setCookie('setCookie',res.data.token);
                 sessionStorage.setItem("userName", res.data.name);
+                localStorage.setItem("userName", res.data.name);
 
                 localStorage.setItem("uId", res.data.id);
                 localStorage.setItem("permission", res.data.permission[0]);

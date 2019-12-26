@@ -7,14 +7,14 @@
 		  	</div>
 		    <div class="condition flex">
 			  	<div class="title">客户:</div>
-			  	<el-select v-model="brandItem" value-key="id" filterable placeholder="请选择">
+			  	<el-select v-model="brandId" value-key="id" filterable placeholder="请选择">
 				    <el-option
 				      v-for="item in brandList"
 				      :key="item.id"
 				      :label="item.name"
-				      :value="item">
+				      :value="item.id">
 				    </el-option>
-				    <div class="txtcenter">
+				    <!-- <div class="txtcenter">
 				   		<el-pagination 
 							 class="fy txtright margin"
 				             layout="prev, pager, next"
@@ -23,7 +23,7 @@
 				             background
 			            >
 			            </el-pagination>
-				   </div>
+				   </div> -->
 				</el-select>
 		 	</div>
 		    <div class="condition flex">
@@ -56,9 +56,10 @@
 				      v-for="item in productOptions"
 				      :key="item.lg_id"
 				      :label="item.lg_title"
-				      :value="item">
+				      :value="item.lg_id">
 				    </el-option>
-				    <div class="txtcenter">
+				</el-select>
+				    <!-- <div class="txtcenter">
 				   		<el-pagination 
 							 class="fy txtright margin"
 				             layout="prev, pager, next"
@@ -67,13 +68,13 @@
 				             background
 			            >
 			            </el-pagination>
-				   </div>
-				</el-select>
+				   </div> -->
+				
 			</div>
 		</div>
 		<div class="searchcon flexb">
 			<div class="condition flex" >
-				<div class="title">负责人:</div>
+				<div class="title">添加负责人:</div>
 		  		<el-select style="max-width:120px;margin:0 10px" v-model="dutys" filterable value-key="id" placeholder="负责人">
 		  			<!-- dutyName dutyId -->
 				    <el-option
@@ -120,7 +121,7 @@
 				<el-input style="max-width:120px;margin:0 10px" v-model="count" placeholder="目标派发量"></el-input><span class="title">份</span>
 			</div>
 			<div class="right padding">
-				<el-button type="primary" @click="addPreson">保存</el-button>
+				<el-button type="primary" @click="addPreson">确定添加</el-button>
 				<!-- <el-button type="primary" @click="addPreson">添加负责人</el-button> -->
 			</div>
 			<div class="padding" style="border:1px solid #dcdfe6" v-if="dutyList!=''">
@@ -303,7 +304,7 @@ export default {
   	return{
   		value:true,
   		projectName:"",
-  		brandItem:"",
+  		brandId:"",
   		cycleTime: '',
   		type:"",
   		product:"",
@@ -443,40 +444,40 @@ export default {
 	        this.executor = ""
         }
   	},
-  	current_change(currentPage){
-		this.currentPage = currentPage;
-		// console.log(this.currentPage);
-		this.queryBrandList();
-	},
+ //  	current_change(currentPage){
+	// 	this.currentPage = currentPage;
+	// 	// console.log(this.currentPage);
+	// 	this.queryBrandList();
+	// },
   	queryBrandList(){
 	    var $this = this;
-		axios.get($this.baseUrl+'api/brand/all?page='+$this.currentPage+'&pageSize=10',{
+		axios.get($this.baseUrl+'api/brand/all?page='+$this.currentPage+'&pageSize=10000',{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
 	              // console.log(res.data);
 	              $this.brandList = res.data.list;
-	              $this.total = res.data.count;
+	              // $this.total = res.data.count;
 	        },error =>{
 	                  // $this.loading = false
 	              // console.log(error.response);
         })
     },
-    current_change1(currentPage){
-		this.currentPage1 = currentPage;
-		console.log(this.currentPage);
-		this.queryBrandList();
-	},
+ //    current_change1(currentPage){
+	// 	this.currentPage1 = currentPage;
+	// 	console.log(this.currentPage);
+	// 	this.queryBrandList();
+	// },
   	queryProductList(){
 	    var $this = this;
-		axios.get($this.baseUrl+'api/luckgroup/product?page='+$this.currentPage1+'&pageSize=10',{
+		axios.get($this.baseUrl+'api/luckgroup/product?page='+$this.currentPage1+'&pageSize=10000',{
 				headers:{
 					"Content-Type":"application/json"
 				}
 	        }).then(res => {
 	              // console.log(res.data);
-	              $this.total1 = res.data.count;
+	              // $this.total1 = res.data.count;
 	              $this.productOptions = res.data.list;
 	        },error =>{
 	                  // $this.loading = false
@@ -597,11 +598,11 @@ export default {
 
 		var obj={
 			projectName: $this.projectName,
-			brandId: $this.brandItem.id,
+			brandId: $this.brandId,
 			cycleTime: cycle,
 			type: $this.type,
 			count: $this.allCount,
-			productId: $this.product.lg_id,
+			productId: $this.product,
 			dutyList: $this.dutyList,
 			templateJson:{
 				"house":$this.house,
@@ -622,7 +623,7 @@ export default {
                   message: "创建成功",
                 });
               	$this.projectName = "";
-				$this.brandItem = "";
+				$this.brandId = "";
 				$this.cycleTime = "";
 				$this.type = "";
 				$this.product = "";

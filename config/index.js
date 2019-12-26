@@ -14,7 +14,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: 'http://47.101.139.94',  // 后台api
+        target: 'https://e.xihongshi.live/',  // 后台api https://e.xihongshi.live/
         changeOrigin: true,  //是否跨域
         // secure: true,
         // pathRewrite: {
